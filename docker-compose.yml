@@ -1,0 +1,29 @@
+version: '2'
+services:
+  nginx-php-fpm:
+    image: 'richarvey/nginx-php-fpm'
+    container_name: 'nginx-php-fpm'
+    restart: always
+    networks:
+      - app-tier
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./www:/var/www/html
+      - ./default.conf:/etc/nginx/sites-available/default.conf
+  postgresql:
+    image: 'postgres:latest'
+    container_name: 'postgresql'
+    restart: always
+    networks:
+      - app-tier
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=55512345
+    volumes:
+      - ./postgresql:/var/lib/postgresql/data
+networks:
+  app-tier:
+    driver: bridge
